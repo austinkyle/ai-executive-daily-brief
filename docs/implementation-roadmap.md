@@ -2,7 +2,7 @@
 
 Status legend: `[ ]` not started · `[~]` in progress · `[x]` done
 
-Last updated: 2026-07-16 (Workflow 01 — Plan & Architecture)
+Last updated: 2026-07-16 (Workflow 03 — Data & Analytics)
 
 ---
 
@@ -153,11 +153,12 @@ Workflow: `workflows/02-foundation.md`. Owner: Terra worker.
 - Vitest wired; first real test `src/lib/env.test.ts` (3 cases).
 - **Accept**: `npm run typecheck && npm run lint && npm run test` green; `db:seed` creates 1 org ("Northbound Supply Co."), 1 user, 1 membership, 5 data connections (shopify/meta/google-ads/klaviyo/gorgias), idempotently. Verified.
 
-### Phase 3 — Data & Analytics — `[ ]`
-Workflow: `workflows/03-data-analytics.md`. Owner: Terra worker.
-- `DataProvider` interface + 6 mock providers + the scenario generator encoding all 9 conditions.
-- Comparison engine, rule engine, anomaly scoring, cross-domain rules, prioritization — all pure functions, all tested.
-- **Accept**: a test suite proves each of the 9 scripted conditions produces its expected finding.
+### Phase 3 — Data & Analytics — `[x]`
+Workflow: `workflows/03-data-analytics.md`. Owner: Terra worker (FabTerra flow).
+- `DataProvider` interface + 6 mock providers (`shopify`, `meta`, `google-ads`, `klaviyo`, `gorgias`, `inventory`) + a deterministic scenario generator (`src/lib/integrations/scenario-generator.ts`, seeded, 30 days) encoding all 9 conditions from `docs/demo-scenario.md`.
+- Ingestion (`src/lib/analytics/ingest.ts`), comparison engine (`src/lib/analytics/compare.ts`: `dayOverDay`, `sameWeekdayWoW`, `trailing7Avg`, `targetVariance`, `windowTrend`), rule engine + `PRODUCTION_RULES` (`src/lib/intelligence/rules.ts`), anomaly z-score scoring (`src/lib/intelligence/anomaly.ts`), 4 cross-domain composite rules (`src/lib/intelligence/cross-domain.ts`), prioritization (`src/lib/intelligence/prioritize.ts`), findings persistence (`src/lib/intelligence/findings.ts`) — all pure functions except ingestion/persistence, all tested.
+- **Accept**: `demo-conditions.test.ts` proves each of the 9 scripted conditions produces its expected finding via the real end-to-end pipeline (ingest → group → rules/anomaly/cross-domain). Verified — full Phase 3 suite: 11 test files, 64 tests passing, `npx tsc --noEmit` clean. Full detail in `docs/intelligence-engine.md` and `docs/data-model.md` §5.
+- **Open item carried forward**: `src/lib/db/seed.ts` only creates 5 `data_connections` rows (shopify/meta/google-ads/klaviyo/gorgias) — no "inventory" connection. Out of scope for Phase 3 (which used its own in-memory test DB throughout, never `data/app.db`); whichever phase first wires ingestion against the real seeded DB needs to add this row.
 
 ### Phase 4 — AI Brief Generation — `[ ]`
 Workflow: `workflows/04-ai-brief.md`. Owner: Terra worker (prompt design reviewed by orchestrator first).
