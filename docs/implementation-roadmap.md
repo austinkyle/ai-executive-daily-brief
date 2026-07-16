@@ -160,10 +160,10 @@ Workflow: `workflows/03-data-analytics.md`. Owner: Terra worker (FabTerra flow).
 - **Accept**: `demo-conditions.test.ts` proves each of the 9 scripted conditions produces its expected finding via the real end-to-end pipeline (ingest → group → rules/anomaly/cross-domain). Verified — full Phase 3 suite: 11 test files, 64 tests passing, `npx tsc --noEmit` clean. Full detail in `docs/intelligence-engine.md` and `docs/data-model.md` §5.
 - **Open item carried forward**: `src/lib/db/seed.ts` only creates 5 `data_connections` rows (shopify/meta/google-ads/klaviyo/gorgias) — no "inventory" connection. Out of scope for Phase 3 (which used its own in-memory test DB throughout, never `data/app.db`); whichever phase first wires ingestion against the real seeded DB needs to add this row.
 
-### Phase 4 — AI Brief Generation — `[ ]`
+### Phase 4 — AI Brief Generation — `[x]`
 Workflow: `workflows/04-ai-brief.md`. Owner: Terra worker (prompt design reviewed by orchestrator first).
 - `LlmClient` abstraction + fallback implementation, Zod brief schema, versioned prompt, evidence enforcement + retry, persistence.
-- **Accept**: schema-invalid and evidence-invalid LLM outputs are rejected/retried; the fallback produces a complete, readable brief for the seeded scenario with zero API key.
+- **Accept**: schema-invalid and evidence-invalid outputs are rejected/retried (verified by tests); the fallback produces a complete, readable brief for the seeded scenario with zero API key (verified by `generate.test.ts`); full suite: 15 test files, 78 tests passing.
 
 ### Phase 5 — Product Interface — `[ ]`
 Workflow: `workflows/05-interface.md`. Owner: Terra worker (visual system defined by orchestrator first).

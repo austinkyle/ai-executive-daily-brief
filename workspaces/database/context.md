@@ -33,3 +33,6 @@ Owns the Drizzle schema, SQLite connection/client setup, migrations, and seed in
 - Exact `metric_key` taxonomy per domain — finalized in Phase 3 when mock providers are built (owned by `analytics`, but affects this schema's `metrics` table indexing).
 - No indexes added yet beyond primary keys — revisit if Phase 3's comparison-engine queries (by `org_id`+`date`+`metric_key`) show up as slow at 30-day scale (unlikely, but cheap to add later).
 - `db/client.ts`'s import-time connection side effect (see above) — watch for it in Phase 3 test design.
+
+## Phase 4 note
+- `src/lib/env.ts` gained an additive `LLM_MODEL` field, defaulting to `"gpt-4o-mini"`, for the AI workspace's Phase 4 needs. This is a small additive change to a file owned by this workspace.

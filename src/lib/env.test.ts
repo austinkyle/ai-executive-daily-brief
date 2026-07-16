@@ -14,6 +14,7 @@ describe("parseEnv", () => {
       DATABASE_PATH: "./data/test.db",
       LLM_API_KEY: "demo-key",
       LLM_BASE_URL: "https://llm.example.com/v1",
+      LLM_MODEL: "gpt-4o-mini",
     });
   });
 

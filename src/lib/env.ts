@@ -4,6 +4,7 @@ const envSchema = z.object({
   DATABASE_PATH: z.string().trim().min(1).default("./data/app.db"),
   LLM_API_KEY: z.string().optional(),
   LLM_BASE_URL: z.url().optional(),
+  LLM_MODEL: z.string().trim().min(1).default("gpt-4o-mini"),
 });
 
 export function parseEnv(raw: Record<string, string | undefined>) {
@@ -11,6 +12,7 @@ export function parseEnv(raw: Record<string, string | undefined>) {
     DATABASE_PATH: raw.DATABASE_PATH,
     LLM_API_KEY: raw.LLM_API_KEY,
     LLM_BASE_URL: raw.LLM_BASE_URL,
+    LLM_MODEL: raw.LLM_MODEL,
   });
 
   if (!result.success) {
