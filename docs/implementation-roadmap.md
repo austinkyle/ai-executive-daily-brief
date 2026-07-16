@@ -144,14 +144,14 @@ Fictional brand: **Northbound Supply Co.**, a DTC outdoor/EDC gear brand (packs,
 ### Phase 1 — Plan & Architecture — `[x]` (this document)
 Owner: orchestrator (Fable 5). Produced this roadmap, `demo-scenario.md`, stubs for the remaining `docs/` files, and initial `workspaces/*/context.md` content.
 
-### Phase 2 — Foundation — `[ ]`
+### Phase 2 — Foundation — `[x]`
 Workflow: `workflows/02-foundation.md`. Owner: Terra worker.
-- Next.js App Router project, strict TypeScript, Tailwind, ESLint, Vitest.
-- Drizzle + `better-sqlite3`, full schema from §3, `db:push` / `db:seed` scripts.
-- Zod env validation module (`LLM_API_KEY` optional → deterministic mode, `LLM_BASE_URL`, `DATABASE_PATH`).
-- Domain types in `src/lib/domain/`, tiny structured logger, seeded PRNG utility.
-- Vitest wired with one real test (env validation).
-- **Accept**: `npm run typecheck && npm run lint && npm run test` green; `db:seed` creates an org, a user, and 5 data connections.
+- Next.js App Router project (repo root), strict TypeScript, Tailwind, ESLint, Vitest. `src/app/` for routes, `src/lib/*` for all domain modules, `@/*` path alias.
+- Drizzle + `better-sqlite3`: `src/lib/db/schema.ts` (all 10 tables from §3, Postgres-portable types), `src/lib/db/client.ts`, `drizzle.config.ts`, `npm run db:push` / `npm run db:seed` (`src/lib/db/seed.ts`, idempotent, `tsx`-run).
+- `src/lib/env.ts` — Zod env validation, pure `parseEnv()` + module-level `env` export (`DATABASE_PATH` defaults to `./data/app.db`, `LLM_API_KEY`/`LLM_BASE_URL` optional).
+- `src/lib/domain/index.ts` — shared entity types; `src/lib/logger.ts` — structured console logger; `src/lib/util/prng.ts` — seeded mulberry32 PRNG (`createPrng`, `randInt`, `pick`) for reuse by Phase 3's scenario generator.
+- Vitest wired; first real test `src/lib/env.test.ts` (3 cases).
+- **Accept**: `npm run typecheck && npm run lint && npm run test` green; `db:seed` creates 1 org ("Northbound Supply Co."), 1 user, 1 membership, 5 data connections (shopify/meta/google-ads/klaviyo/gorgias), idempotently. Verified.
 
 ### Phase 3 — Data & Analytics — `[ ]`
 Workflow: `workflows/03-data-analytics.md`. Owner: Terra worker.
