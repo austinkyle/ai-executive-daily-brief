@@ -10,7 +10,8 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "db:push": "node -e \"require('fs').mkdirSync(require('path').dirname(process.env.DATABASE_PATH || './data/app.db'), { recursive: true })\" && drizzle-kit push",
-    "db:seed": "tsx src/lib/db/seed.ts"
+    "db:seed": "tsx src/lib/db/seed.ts",
+    "brief:generate": "tsx scripts/brief-generate.ts"
   },
   "dependencies": {
     "better-sqlite3": "^12.11.1",

@@ -42,13 +42,20 @@ These conditions are written to interact, not sit in isolation, so the generated
 
 The scenario generator takes a fixed seed constant (defined once in `src/lib/domain` or the seed script itself) and is a pure function of `(day_index) → metrics`. Running `db:seed` twice against a fresh database must produce byte-identical `metrics` rows. No wall-clock time or unseeded `Math.random()` calls are permitted in the generator.
 
-## Demo Walkthrough (5 minutes)
+## 5-Minute Walkthrough
 
-To be expanded in Phase 6 (`workflows/06-delivery-docs.md`) once the UI exists. Planned shape:
-1. Cold clone → `npm install` → `npm run db:seed` → `npm run dev`.
-2. Open Today's Brief — read the executive summary and the top 2–3 findings.
-3. Open Scorecard — show the same underlying numbers with DoD/WoW/7-day-avg deltas.
-4. Open Alerts & Opportunities — show the full findings list grouped by severity, expand evidence on one critical and one opportunity finding.
-5. Open History — show the brief exists as a persisted, re-viewable record.
-6. Open Data Sources — show the 5 simulated connections and their sync status.
-7. Regenerate the brief on demand to show the pipeline runs live, not just from a fixture.
+Before presenting, run the following commands (skip the seed command only if the database is already seeded):
+
+```bash
+npm run db:seed
+npm run dev
+```
+
+1. **Today's Brief:** Open `http://localhost:3000` and say, “Northbound's daily brief starts with the few decisions leadership should make today,” while pointing to the executive summary, status, and evidence-linked priorities.
+2. **Generate:** Click **Generate Today's Brief** and say, “This runs the same deterministic findings-to-narrative path on demand, with a no-key fallback available,” while pointing to the refreshed generated brief and its Print link.
+3. **Scorecard:** Open `/scorecard` and say, “The narrative is backed by daily, weekly, and trailing comparisons rather than a black-box conclusion,” while pointing to the commerce, marketing, support, and inventory deltas.
+4. **Alerts:** Open `/alerts` and say, “Condition #3, *One campaign deteriorating sharply*, is isolated to Prospecting – Bestseller Bundle rather than treated as a vague paid-media problem,” while pointing to its severity, change, evidence, and next step.
+5. **Alerts, continued:** Say, “Condition #4, *Top product approaching stockout*, is a separate inventory risk on the best-selling pack,” while pointing to the critical stockout alert; if visible, note that condition #6 shipping-delay complaints can corroborate fulfillment pressure rather than prove causation alone.
+6. **History:** Open `/history` and say, “Generated briefs persist as a reviewable decision record instead of disappearing into a chat response,” while pointing to dated historical entries.
+7. **Data Sources:** Open `/sources` and say, “The demo makes its data provenance visible across six simulated connections,” while pointing to Shopify, Meta, Google Ads, Klaviyo, Gorgias, inventory, and their sync status.
+8. **Print view:** Follow the Print link to `/brief/[id]/print` and say, “A clean meeting-ready brief can be printed or saved as PDF directly by the browser,” while pointing to **Print / Save as PDF** and clarifying no server-side PDF or real email/Slack delivery is claimed.

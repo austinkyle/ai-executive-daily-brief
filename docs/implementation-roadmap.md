@@ -2,7 +2,7 @@
 
 Status legend: `[ ]` not started · `[~]` in progress · `[x]` done
 
-Last updated: 2026-07-17 (Workflow 05 — Product Interface)
+Last updated: 2026-07-17 (Workflow 06 — Delivery, Testing, Docs)
 
 ---
 
@@ -174,12 +174,12 @@ Workflow: `workflows/05-interface.md`. Owner: Terra worker (visual system define
 - **Accept**: all 5 routes render against seeded data; brief generation is triggerable from the UI. Verified: `npm run typecheck && npm run lint && npm run test` green (78 tests/15 files); `npm run db:seed` idempotent (stable row counts across 3 runs); manual dev-server hit of all 5 routes returning real content; direct HTTP invocation of the Next.js server-action protocol confirmed `generateTodaysBrief()` inserts correctly, is idempotent, and revalidates `/` and `/history`; `data/app.db` reset back to pre-demo state (29 briefs, 0 for 2026-07-16) after that E2E test.
 - **Scope confirmed with user, logged here**: no Settings view (narrows PRD's "Settings needed for demo" line — deliberate, not an oversight); no print/export view this phase (deferred to Phase 6 per its own label in this workspace's context).
 
-### Phase 6 — Delivery, Testing, Docs — `[ ]`
+### Phase 6 — Delivery, Testing, Docs — `[x]`
 Workflow: `workflows/06-delivery-docs.md`. Owner: Terra worker build; orchestrator final adversarial review.
 - On-demand generation endpoint + `npm run brief:generate` script, printable brief view + simulated delivery log.
 - Fill remaining test gaps; full suite < 60s.
 - Complete `docs/` set, README (17-section spec), ROI model, `consulting-implementation.md`.
-- **Accept**: cold clone → documented setup → working demo; adversarial review finds no material issues left unresolved.
+- **Accept**: `brief:generate` script, `POST /api/brief/generate` route, printable brief view, simulated email/Slack delivery log, and Phase 6 documentation completed; verified by orchestrator — `npm run typecheck && npm run lint && npm run test` all green, 18 test files / 96 tests passing in <1s; adversarial review pass found and fixed 2 documentation issues (stale `src/lib/notifications` reference in `architecture.md`, duplicate walkthrough stub in `demo-scenario.md`), no material issues remaining.
 
 ---
 

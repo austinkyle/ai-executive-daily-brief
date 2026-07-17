@@ -20,3 +20,5 @@ export function getAllMetrics(db: Database, orgId: string): schema.MetricRow[] {
 export function getTargets(db: Database, orgId: string): schema.TargetRow[] { return db.select().from(schema.targets).where(eq(schema.targets.orgId, orgId)).all(); }
 export function listDataConnections(db: Database, orgId: string): schema.DataConnectionRow[] { return db.select().from(schema.dataConnections).where(eq(schema.dataConnections.orgId, orgId)).all(); }
 export function getLatestSyncRun(db: Database, connectionId: string): schema.SyncRunRow | undefined { return db.select().from(schema.syncRuns).where(eq(schema.syncRuns.connectionId, connectionId)).orderBy(desc(schema.syncRuns.finishedAt)).limit(1).get(); }
+export function getBriefById(db: Database, id: string): schema.BriefRow | undefined { return db.select().from(schema.briefs).where(eq(schema.briefs.id, id)).get(); }
+export function getDeliveriesForBrief(db: Database, briefId: string): schema.DeliveryRow[] { return db.select().from(schema.deliveries).where(eq(schema.deliveries.briefId, briefId)).orderBy(schema.deliveries.sentAt).all(); }

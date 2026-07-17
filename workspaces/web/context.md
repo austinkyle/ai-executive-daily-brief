@@ -3,12 +3,14 @@
 ## Domain scope
 Owns the Next.js App Router UI: the five product views, the "Generate Today's Brief" action, and all loading/empty/error states. Consumes `briefs`/`findings`/`metrics` (read-only) and the `analytics` workspace's comparison functions for the Scorecard; does not compute anything itself beyond simple presentation-layer derivations.
 
-## Status: Phase 5 complete (2026-07-17)
+## Status: Phase 6 complete (2026-07-17)
 
 All 5 views + generate action built, typechecked, linted, tested, and manually
 verified end-to-end (dev server route hits + direct server-action HTTP
 invocation). See `docs/implementation-roadmap.md` Phase 5 for the acceptance
-summary.
+summary. Phase 6 (delivery + docs) added on-demand generation surfaces, a
+printable brief view, simulated delivery, and completed the doc set — see
+below.
 
 ## Files touched
 
@@ -74,9 +76,71 @@ summary.
 ## Interfaces owned
 - None consumed by other workspaces — this is the top of the dependency graph.
 
+## Phase 6 — Delivery, Testing, Docs (2026-07-17)
+
+**New:**
+- `src/lib/delivery/generate-and-deliver.ts` — `generateAndDeliverBrief(db, orgId, date)`,
+  the single source of truth for "get or create today's brief, then deliver
+  it": reuses an existing brief for the date (via `getBriefByDate`) or calls
+  `generateBrief`, then always calls `simulateDelivery`. Used identically by
+  the server action, `scripts/brief-generate.ts`, and `POST /api/brief/generate`
+  so generation logic isn't duplicated three times.
+- `src/lib/delivery/simulate-delivery.ts` — `simulateDelivery(db, briefId)`,
+  idempotent: inserts one `email` + one `slack` row into `deliveries` (both
+  `status: "sent"`) on first call, returns the same 2 rows unchanged on repeat
+  calls for the same `briefId`.
+- `scripts/brief-generate.ts` — `npm run brief:generate` CLI entry point.
+- `src/app/api/brief/generate/route.ts` — `POST` route wrapping the same
+  function, intended as the future cron/scheduler target instead of a daemon.
+- `src/app/brief/[id]/print/page.tsx` — printable brief view (additive only,
+  did not touch `src/app/page.tsx`'s rendering). Renders inside the shared
+  root layout (inherits the `aside` sidebar), so `globals.css`'s
+  `@media print` rule hides `aside` and anything marked `.no-print`.
+- `src/components/PrintButton.tsx` — client component, `window.print()`.
+- `src/lib/web/format.test.ts`, `src/lib/delivery/simulate-delivery.test.ts`,
+  `src/lib/delivery/generate-and-deliver.test.ts` — closed the test gaps
+  flagged at the end of Phase 5.
+
+**Modified:**
+- `src/app/actions/generate-brief.ts` — now delegates to
+  `generateAndDeliverBrief` instead of duplicating the
+  get-or-create-brief check inline.
+- `src/lib/web/queries.ts` — added `getBriefById`, `getDeliveriesForBrief`.
+- `src/app/page.tsx`, `src/app/history/page.tsx` — added a "Print" link to
+  each brief (Today's Brief header; each History row's disclosure summary).
+- `src/app/globals.css` — `@media print` rule.
+- No schema changes: `deliveries` table already existed from Phase 2, unused
+  until this phase.
+
+## Decisions made this phase (Phase 6)
+
+- **`generateAndDeliverBrief` as single source of truth**: rather than let
+  the action/script/route each duplicate "check for existing brief, else
+  generate, then deliver," all three call one function. Verified idempotent
+  by test (repeat calls for the same org/date return the same brief row and
+  the same 2 delivery rows, no duplicates).
+- **Print view is additive-only**: `/brief/[id]/print` is a new route reusing
+  the existing Card/StatusBanner/EvidenceDisclosure components rather than
+  refactoring `src/app/page.tsx`, to avoid risking already-verified Phase 5
+  code for a presentation-only feature.
+- **No server-side PDF generation**: print-to-PDF is via the browser's native
+  `window.print()` + `@media print` CSS only, per the resource budget (no
+  heavy deps like puppeteer).
+- **Nesting a `Link` inside `EvidenceDisclosure`'s `<summary>` is safe**:
+  considered whether the History row's "Print" link would also toggle the
+  native `<details>` open/closed on click (a known browser gotcha when
+  nesting interactive elements in `<summary>`). Confirmed safe: Next.js's
+  `Link` calls `preventDefault()` on click, which also cancels the browser's
+  default toggle behavior for the ancestor `<summary>`.
+
+## Interfaces owned
+- None consumed by other workspaces — this is the top of the dependency graph.
+
 ## Open items
 - No Settings view — confirmed scope decision (narrows the PRD's "Settings
   needed for demo" line), not an oversight.
-- No print/export view this phase — deferred to Phase 6
-  (`app/brief/[id]/print/page.tsx` + simulated delivery log).
-- Adversarial review pass for this phase still pending as of this write.
+- Adversarial review pass for Phase 6 complete — found and fixed 2
+  documentation issues (stale `src/lib/notifications` reference in
+  `docs/architecture.md`; duplicate walkthrough stub in
+  `docs/demo-scenario.md`), no material issues remaining.
+- No git commit made this session — not requested by the user.

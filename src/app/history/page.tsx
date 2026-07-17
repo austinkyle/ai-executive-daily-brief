@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 import { BarChart } from "@/components/BarChart";
 import { Card } from "@/components/Card";
 import { EmptyState } from "@/components/EmptyState";
@@ -18,7 +20,7 @@ export default function Page() {
   return <div className="flex flex-col gap-6">
     <Card title="Status Trend"><div className="overflow-x-auto text-accent"><BarChart bars={trendBars} width={Math.max(400, trendBars.length * 24)} height={80} /></div></Card>
     <div className="flex flex-col gap-2">
-      {briefsRows.map((brief) => <EvidenceDisclosure key={brief.id} summary={<span className="flex items-center gap-2"><span className="font-medium">{formatDate(brief.date)}</span><SeverityBadge kind="status" value={brief.overallStatus} /><span className="text-muted truncate">{brief.executiveSummary}</span></span>}>
+      {briefsRows.map((brief) => <EvidenceDisclosure key={brief.id} summary={<span className="flex items-center gap-2"><span className="font-medium">{formatDate(brief.date)}</span><SeverityBadge kind="status" value={brief.overallStatus} /><span className="text-muted truncate">{brief.executiveSummary}</span><Link href={`/brief/${brief.id}/print`} className="text-accent hover:opacity-90">Print</Link></span>}>
         <p className="text-sm">{brief.executiveSummary}</p>
         {brief.wins.length > 0 ? <ul className="mt-2 list-disc pl-4 text-sm">{brief.wins.map((win, i) => <li key={i}>{win}</li>)}</ul> : null}
       </EvidenceDisclosure>)}
