@@ -50,9 +50,14 @@ export function buildFallbackContent(findings: FindingForPrompt[]): BriefContent
       finding.severity === "opportunity",
   );
 
-  const risks = riskFindings.map(
-    (finding) => `${finding.whatChanged} ${finding.whyItMatters}`,
-  );
+  // Several findings (e.g. z-score anomalies) share identical whyItMatters boilerplate;
+  // repeat it only once so the risks section reads like prose, not a template loop.
+  const seenWhyItMatters = new Set<string>();
+  const risks = riskFindings.map((finding) => {
+    if (seenWhyItMatters.has(finding.whyItMatters)) return finding.whatChanged;
+    seenWhyItMatters.add(finding.whyItMatters);
+    return `${finding.whatChanged} ${finding.whyItMatters}`;
+  });
   const wins = winFindings.map((finding) => finding.whatChanged);
   const opportunities = opportunityFindings.map(
     (finding) => `${finding.whyItMatters} ${finding.recommendedNextStep}`,

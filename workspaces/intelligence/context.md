@@ -38,3 +38,8 @@ Owns turning normalized metrics + comparisons into ranked, evidence-backed findi
 
 ### Open items
 - None outstanding for Phase 3's scope. `findings.ts` persists `evidenceMetricRefs`/`score`/etc. but the `findings` table schema (locked in Phase 2) has no `entityType`/`entityId`/`ruleId`/`magnitude` columns — those `FindingDraft` fields are dropped at persistence time by design; if a future phase needs them queryable, that's a schema change to raise explicitly, not a Phase 3 gap.
+
+## 2026-07-17 — Final adversarial review fixes
+- `anomaly.ts`: z-score anomalies now require ≥5% relative change (noise floor); severity is `critical` only when |z|>3 AND relative change ≥15%, else `warning`; magnitude = min(|z|,4) × min(relativeChange,1) × 2.5 so scores reflect business impact, not just statistical rarity. Two new tests in `anomaly.test.ts`.
+- New `labels.ts` (metricLabel/entityLabel/metricPhrase/capitalize) humanizes prose in anomaly + rule findings ("gross sales storewide", "shipping delays", "the abandoned-cart flow").
+- `cross-domain.ts` conversion-issue magnitude ×10 to sit on the same scale as trend-multiple rule magnitudes (was ranked last of all findings).

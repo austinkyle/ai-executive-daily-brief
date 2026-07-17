@@ -32,7 +32,10 @@ export function detectConversionIssue(groups: MetricSeriesGroup[], asOfDate: str
 
   return {
     ruleId: "conversion-issue", domain: "commerce", entityType: "org", entityId: sessions.entityId, severity: "warning", confidence: 0.85,
-    magnitude: Math.abs(cvrTrend.percentChange),
+    // A storewide conversion decline is a top-line causal finding; its percent-change
+    // magnitude is scaled (×10) onto the same range trend-multiple rules occupy so it
+    // is not outranked by narrower single-entity findings.
+    magnitude: Math.abs(cvrTrend.percentChange) * 10,
     evidenceMetricIds: [...lastNPointIds(cvr.points, 7), ...lastNPointIds(newRevenue.points, 7), ...lastNPointIds(returningRevenue.points, 7)],
     date: asOfDate, title: "Conversion rate declining while traffic holds steady",
     whatChanged: `Sessions are flat (${(sessionsTrend.percentChange * 100).toFixed(1)}% change) but conversion rate fell ${(cvrTrend.percentChange * 100).toFixed(1)}%; new-customer revenue absorbed the decline (${(newRevenueTrend.percentChange * 100).toFixed(1)}%) while returning-customer revenue stayed resilient (${(returningRevenueTrend.percentChange * 100).toFixed(1)}%).`,

@@ -32,3 +32,6 @@ Owns the narrative layer: the LLM client abstraction, prompt template, structure
 ## Open items
 
 None for Phase 4. Future prompt or provider changes must preserve the narrow finding boundary, evidence validation, deterministic key-number path, and persisted prompt version.
+
+## 2026-07-17 — Final adversarial review fixes
+- `fallback-templates.ts`: risks section now deduplicates identical `whyItMatters` sentences (anomaly boilerplate previously repeated 5× verbatim in one brief).

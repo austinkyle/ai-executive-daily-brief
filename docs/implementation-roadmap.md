@@ -181,6 +181,13 @@ Workflow: `workflows/06-delivery-docs.md`. Owner: Terra worker build; orchestrat
 - Complete `docs/` set, README (17-section spec), ROI model, `consulting-implementation.md`.
 - **Accept**: `brief:generate` script, `POST /api/brief/generate` route, printable brief view, simulated email/Slack delivery log, and Phase 6 documentation completed; verified by orchestrator — `npm run typecheck && npm run lint && npm run test` all green, 18 test files / 96 tests passing in <1s; adversarial review pass found and fixed 2 documentation issues (stale `src/lib/notifications` reference in `architecture.md`, duplicate walkthrough stub in `demo-scenario.md`), no material issues remaining.
 
+### Final adversarial review — `[x]` (2026-07-17)
+Owner: orchestrator (Fable 5). Full Definition-of-Done re-verified by execution (fresh `npm ci`, typecheck/lint clean, 98 tests <2s, fresh seed, keyless brief generation, all 5 views + print view rendering seeded data, 3 brief claims traced finding → metrics → scenario generator, all 9 demo conditions present in findings and cited by the brief). No critical defects. Material fixes applied:
+- Anomaly findings no longer hardcode `critical`/`magnitude=|z|`: a 5% relative-change noise floor suppresses statistically-rare-but-trivial moves, severity blends |z| with relative change, and magnitude reflects business impact — previously a −1.7% open-rate wiggle outranked every scripted business story in the brief.
+- Storewide conversion-decline magnitude rescaled onto the same range as trend-multiple rules so the flagship causal finding ranks mid-pack instead of last.
+- Fallback prose: humanized metric/entity labels (`src/lib/intelligence/labels.ts`), deduplicated repeated why-it-matters boilerplate in the risks section.
+- `architecture.md` stale "outline stub" status removed; Phase 6 work committed.
+
 ---
 
 ## Open Items / Assumptions Log
