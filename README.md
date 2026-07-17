@@ -1,5 +1,18 @@
 # AI Executive Daily Brief
 
+## What is this, in plain English?
+Imagine you run an online store. Every day, important information about your business lives scattered across five or six different apps: your storefront (Shopify), your ad accounts (Meta, Google), your email marketing (Klaviyo), your customer support inbox (Gorgias), and your warehouse/inventory system. To know "how is my business doing today?" a busy founder has to log into all of them, remember what normal looks like, and manually connect the dots — *"oh, refunds are up on this one product, and support tickets about shipping are also up, and inventory for that same product is almost out... those are probably related."*
+
+This project automates that morning ritual. It's a small web app that:
+1. **Pulls in a day's worth of business data** (simulated here, but structured exactly like the real thing).
+2. **Runs the math a sharp analyst would run** — is this number unusual compared to the recent trend? Is it correlated with something in a different system? — using plain statistics, not guesswork.
+3. **Writes it up in plain English**, as a short morning briefing: what changed, why it matters, and what to do about it. An AI model can write the narration, but it's only allowed to describe findings the math already proved — it can't make things up, and every sentence in a brief can be traced back to real numbers.
+4. **Shows it to you** in a clean dashboard, with a one-click "print / save as PDF" version you could hand to an executive team.
+
+The whole thing runs on your laptop with one command, needs no paid API keys or accounts to try (it has a built-in "no AI key" mode that still writes a coherent brief), and uses a realistic 30-day simulated dataset for a fictional outdoor-gear brand, "Northbound Supply Co.," so you can see it work end-to-end immediately.
+
+This is a **portfolio/demo project**, not a live product connected to real stores — think of it as a working prototype that shows how such a product would be built, all the way from data to a decision an executive can act on in under two minutes.
+
 ## Product overview
 AI Executive Daily Brief is a portfolio-quality decision-support MVP for **Northbound Supply Co.**, a fictional Shopify DTC outdoor/EDC brand. Deterministic analytics identify evidence-linked findings; an optional OpenAI-compatible LLM writes narrative only from those findings. A deterministic fallback narrator is a fully supported, no-API-key path.
 
@@ -22,24 +35,17 @@ The brief reduces repetitive reporting work and helps teams review material risk
 - Printable `/brief/[id]/print` view with browser **Print / Save as PDF**, not server-side PDF generation.
 - Simulated `email` and `slack` `sent` rows in `deliveries`; no SMTP or Slack API integration.
 
-## Screenshots (placeholders)
-<!-- Capture Today's Brief at viewport width 1440px: after running `npm run dev` and `npm run db:seed`, visit `http://localhost:3000/`; save the image as `docs/screenshots/todays-brief.png`. -->
-![Today's Brief placeholder](docs/screenshots/todays-brief.png)
+## Screenshots
+Not yet captured in this repo. To generate them yourself: `npm run dev` and `npm run db:seed`, then visit each route below at a 1440px viewport and save into `docs/screenshots/`:
 
-<!-- Capture Scorecard at viewport width 1440px: after running `npm run dev` and `npm run db:seed`, visit `http://localhost:3000/scorecard`; save the image as `docs/screenshots/scorecard.png`. -->
-![Scorecard placeholder](docs/screenshots/scorecard.png)
-
-<!-- Capture Alerts at viewport width 1440px: after running `npm run dev` and `npm run db:seed`, visit `http://localhost:3000/alerts`; save the image as `docs/screenshots/alerts.png`. -->
-![Alerts placeholder](docs/screenshots/alerts.png)
-
-<!-- Capture History at viewport width 1440px: after running `npm run dev` and `npm run db:seed`, visit `http://localhost:3000/history`; save the image as `docs/screenshots/history.png`. -->
-![History placeholder](docs/screenshots/history.png)
-
-<!-- Capture Data Sources at viewport width 1440px: after running `npm run dev` and `npm run db:seed`, visit `http://localhost:3000/sources`; save the image as `docs/screenshots/data-sources.png`. -->
-![Data Sources placeholder](docs/screenshots/data-sources.png)
-
-<!-- Capture Print view at viewport width 1440px: after running `npm run dev` and `npm run db:seed`, visit `http://localhost:3000/brief/[id]/print` using any seeded brief id from the database; save the image as `docs/screenshots/brief-print.png`. -->
-![Print view placeholder](docs/screenshots/brief-print.png)
+| View | Route | Suggested filename |
+|---|---|---|
+| Today's Brief | `http://localhost:3000/` | `docs/screenshots/todays-brief.png` |
+| Scorecard | `http://localhost:3000/scorecard` | `docs/screenshots/scorecard.png` |
+| Alerts | `http://localhost:3000/alerts` | `docs/screenshots/alerts.png` |
+| History | `http://localhost:3000/history` | `docs/screenshots/history.png` |
+| Data Sources | `http://localhost:3000/sources` | `docs/screenshots/data-sources.png` |
+| Print view | `http://localhost:3000/brief/[id]/print` (any seeded brief id) | `docs/screenshots/brief-print.png` |
 
 ## Architecture overview
 A modular monolith: one Next.js App Router application separates provider adapters, ingestion, analytics, intelligence, AI narration, persistence, delivery simulation, and UI without microservices, queues, Docker, or a worker daemon. SQLite via Drizzle keeps local setup light and has a documented Postgres path. See [architecture](docs/architecture.md).
