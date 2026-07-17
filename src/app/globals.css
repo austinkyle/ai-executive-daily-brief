@@ -1,26 +1,18 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #fafafa; --foreground: #171717; --surface: #ffffff; --border: #e5e5e5; --muted: #6b7280; --accent: #3b5bdb; --accent-soft: #eef1fd; --red: #dc2626; --red-soft: #fef2f2; --amber: #d97706; --amber-soft: #fffbeb; --green: #16a34a; --green-soft: #f0fdf4; --blue: #2563eb; --blue-soft: #eff6ff; --slate: #64748b; --slate-soft: #f1f5f9;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-background: var(--background); --color-foreground: var(--foreground); --color-surface: var(--surface); --color-border: var(--border); --color-muted: var(--muted); --color-accent: var(--accent); --color-accent-soft: var(--accent-soft); --color-red: var(--red); --color-red-soft: var(--red-soft); --color-amber: var(--amber); --color-amber-soft: var(--amber-soft); --color-green: var(--green); --color-green-soft: var(--green-soft); --color-blue: var(--blue); --color-blue-soft: var(--blue-soft); --color-slate: var(--slate); --color-slate-soft: var(--slate-soft);
+  --font-sans: var(--font-geist-sans); --font-mono: var(--font-geist-mono);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: #0a0a0a; --foreground: #ededed; --surface: #141414; --border: #262626; --muted: #9ca3af; --accent: #7c93ff; --accent-soft: #1a1f3d; --red: #f87171; --red-soft: #2a1414; --amber: #fbbf24; --amber-soft: #2a2210; --green: #4ade80; --green-soft: #10251a; --blue: #60a5fa; --blue-soft: #101d33; --slate: #94a3b8; --slate-soft: #1c2229;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
-}
+body { background: var(--background); color: var(--foreground); font-family: Arial, Helvetica, sans-serif; }

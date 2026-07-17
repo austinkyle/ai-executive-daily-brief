@@ -1,0 +1,1 @@
+export function ErrorState({ title = "Something went wrong", description }: { title?: string; description?: string }) { return <div className="py-12 text-center"><h2 className="text-base font-medium text-red">{title}</h2>{description ? <p className="mt-2 text-sm text-muted">{description}</p> : null}</div>; }

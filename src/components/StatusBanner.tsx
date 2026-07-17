@@ -1,0 +1,2 @@
+import { STATUS_STYLES } from "@/lib/web/status-styles";
+export function StatusBanner({ status, summary }: { status: "strong" | "stable" | "mixed" | "at_risk"; summary: string }) { const style = STATUS_STYLES[status]; return <section className={`w-full rounded-lg p-4 md:p-6 ${style.bg}`}><p className={`text-2xl font-semibold ${style.text}`}>{style.label}</p><p className="mt-1 text-base">{summary}</p></section>; }

@@ -1,0 +1,2 @@
+import { STATUS_STYLES, SEVERITY_STYLES } from "@/lib/web/status-styles";
+export function SeverityBadge({ kind, value }: { kind: "status" | "severity"; value: string }) { const styles = kind === "status" ? STATUS_STYLES : SEVERITY_STYLES; const style = (styles as Record<string, { text: string; bg: string; label: string }>)[value]; return <span className={`inline-flex rounded-full px-2.5 py-0.5 text-xs font-medium ${style ? `${style.text} ${style.bg}` : "bg-slate-soft text-slate"}`}>{style?.label ?? value}</span>; }

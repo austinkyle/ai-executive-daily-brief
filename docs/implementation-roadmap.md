@@ -2,7 +2,7 @@
 
 Status legend: `[ ]` not started · `[~]` in progress · `[x]` done
 
-Last updated: 2026-07-16 (Workflow 03 — Data & Analytics)
+Last updated: 2026-07-17 (Workflow 05 — Product Interface)
 
 ---
 
@@ -165,11 +165,14 @@ Workflow: `workflows/04-ai-brief.md`. Owner: Terra worker (prompt design reviewe
 - `LlmClient` abstraction + fallback implementation, Zod brief schema, versioned prompt, evidence enforcement + retry, persistence.
 - **Accept**: schema-invalid and evidence-invalid outputs are rejected/retried (verified by tests); the fallback produces a complete, readable brief for the seeded scenario with zero API key (verified by `generate.test.ts`); full suite: 15 test files, 78 tests passing.
 
-### Phase 5 — Product Interface — `[ ]`
+### Phase 5 — Product Interface — `[x]`
 Workflow: `workflows/05-interface.md`. Owner: Terra worker (visual system defined by orchestrator first).
 - Today's Brief, Scorecard, Alerts & Opportunities, History, Data Sources + "Generate Today's Brief" action.
 - Loading/empty/error states everywhere, responsive, keyboard-accessible core interactions.
-- **Accept**: all 5 routes render against seeded data; brief generation is triggerable from the UI.
+- Task 0 closed the Phase 3 open item: `seed.ts` now wires the full ingest → group → rules/anomaly/cross-domain → prioritize → persist → `generateBrief` pipeline against the real `data/app.db` (previously only the in-memory test DB had ever exercised it), adds the missing 6th `inventory` data_connection, and pre-generates 29 days of briefs (day-index 0–28) while leaving day 29 (2026-07-16, "today") ungenerated for the live demo CTA.
+- Design tokens (surface/border/muted/accent + 4-color status/severity scale with soft-bg variants) added to `globals.css`; sidebar/top-bar shell in `layout.tsx`; 9 shared components in `src/components/`; typed org-scoped data access in `src/lib/web/queries.ts`; `generateTodaysBrief` server action in `src/app/actions/`.
+- **Accept**: all 5 routes render against seeded data; brief generation is triggerable from the UI. Verified: `npm run typecheck && npm run lint && npm run test` green (78 tests/15 files); `npm run db:seed` idempotent (stable row counts across 3 runs); manual dev-server hit of all 5 routes returning real content; direct HTTP invocation of the Next.js server-action protocol confirmed `generateTodaysBrief()` inserts correctly, is idempotent, and revalidates `/` and `/history`; `data/app.db` reset back to pre-demo state (29 briefs, 0 for 2026-07-16) after that E2E test.
+- **Scope confirmed with user, logged here**: no Settings view (narrows PRD's "Settings needed for demo" line — deliberate, not an oversight); no print/export view this phase (deferred to Phase 6 per its own label in this workspace's context).
 
 ### Phase 6 — Delivery, Testing, Docs — `[ ]`
 Workflow: `workflows/06-delivery-docs.md`. Owner: Terra worker build; orchestrator final adversarial review.

@@ -1,0 +1,2 @@
+import type { ReactNode } from "react";
+export function EvidenceDisclosure({ summary, children }: { summary: ReactNode; children: ReactNode }) { return <details className="border border-border rounded-md"><summary className="cursor-pointer px-3 py-2 text-sm font-medium [&::-webkit-details-marker]:hidden">{summary}</summary><div className="px-3 pb-3 text-sm text-muted">{children}</div></details>; }
