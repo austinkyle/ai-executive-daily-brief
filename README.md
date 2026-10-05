@@ -1,12 +1,14 @@
 # AI Executive Daily Brief
 
+**[FDE case study](FDE-CASE-STUDY.md)** — software establishes findings, optional AI narrates, executives decide. This is a fictional-data portfolio MVP; no client observation, production adoption, or measured savings is claimed.
+
 ## What is this, in plain English?
 Imagine you run an online store. Every day, important information about your business lives scattered across five or six different apps: your storefront (Shopify), your ad accounts (Meta, Google), your email marketing (Klaviyo), your customer support inbox (Gorgias), and your warehouse/inventory system. To know "how is my business doing today?" a busy founder has to log into all of them, remember what normal looks like, and manually connect the dots — *"oh, refunds are up on this one product, and support tickets about shipping are also up, and inventory for that same product is almost out... those are probably related."*
 
 This project automates that morning ritual. It's a small web app that:
 1. **Pulls in a day's worth of business data** (simulated here, but structured exactly like the real thing).
 2. **Runs the math a sharp analyst would run** — is this number unusual compared to the recent trend? Is it correlated with something in a different system? — using plain statistics, not guesswork.
-3. **Writes it up in plain English**, as a short morning briefing: what changed, why it matters, and what to do about it. An AI model can write the narration, but it's only allowed to describe findings the math already proved — it can't make things up, and every sentence in a brief can be traced back to real numbers.
+3. **Writes it up in plain English**, as a short morning briefing: what changed, why it matters, and what to do about it. An AI model can write the narration, but it is instructed to describe only supplied findings. Schema checks and finding-ID validation constrain the output, but do not prove every narrative sentence is factually entailed. An executive still reviews recommendations against the evidence.
 4. **Shows it to you** in a clean dashboard, with a one-click "print / save as PDF" version you could hand to an executive team.
 
 The whole thing runs on your laptop with one command, needs no paid API keys or accounts to try (it has a built-in "no AI key" mode that still writes a coherent brief), and uses a realistic 30-day simulated dataset for a fictional outdoor-gear brand, "Northbound Supply Co.," so you can see it work end-to-end immediately.
@@ -56,7 +58,7 @@ simulated providers → normalized metrics and sync runs → comparisons/rules/a
 → prioritized findings with metric evidence → LLM or deterministic fallback narrative
 → validated brief and simulated delivery rows → product views and print view
 ```
-The LLM cannot mine source rows. Its evidence references must map to input findings; invalid output is rejected.
+The LLM receives findings rather than source rows. Its evidence references must map to input findings; invalid references and schema failures trigger retry/fallback. Valid IDs alone do not prove narrative entailment or causal correctness.
 
 ## Tech stack
 - Next.js App Router, React, TypeScript strict, Tailwind CSS
